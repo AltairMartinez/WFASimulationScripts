@@ -55,17 +55,14 @@ var s1_done = false;
 var s2_done = false;
 var s3_done = false;
 
-//assumption: zone index and hazard index start at 1
-function GetRandomHazardIndex(_iZoneNumber, _iCount, _iMax)
+//the generated question list
+var Questions = [];
+
+function On_QuestionList()
 {
-    var arr = [];
-	while(arr.length < _iCount)
-	{
-        var randomnumber = (_iZoneNumber-1)*_iMax + Math.ceil(Math.random()*_iMax);
-        if(arr.indexOf(randomnumber) > -1) continue;
-        arr[arr.length] = randomnumber;
-	}
-	return arr;
+	var inData = JSON.parse(QuestionList.value);
+    Questions = inData.value;
+	eon.trace(Questions);
 }
 
 function initialize()
@@ -147,8 +144,6 @@ function OffTimer()
 		TimerNodes.GetMFElement(i).GetFieldByName('SetRun_').value = true;
 	}
 }
-
-
 	
 
 function Shuffle_s1_Hazards()
@@ -1201,3 +1196,4 @@ function On_resetCam()
 {
 	nPlayer.value.GetFieldByName('Orientation').value = eon.MakeSFVec3f(-148.556,0.4778,0);
 }
+
