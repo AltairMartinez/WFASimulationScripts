@@ -375,7 +375,7 @@ function SendSingleAnswer(QuestionID, IsCorrect)
    var outData = {};
    outData.name = "RegisterAnswer";
    outData.value = answerData;
-   SingleAnswer.value = outData;	 
+   SingleAnswer.value = JSON.stringify(outData);	 
 
    eon.trace(SingleAnswer);
 }
