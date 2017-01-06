@@ -57,6 +57,7 @@ var s3_done = false;
 
 //the generated question list
 var Questions = [];
+var Answers = [];
 
 function On_QuestionList()
 {
@@ -360,6 +361,23 @@ function SetUIFound_Wrong()
 	}
 }
 
+function SendSingleAction(QuestionID, IsCorrect)
+{
+   var answerData = {};
+   answerData.QuestionID = QuestionID;
+   answerData.IsCorrect = IsCorrect;
+   answerData.Timestamp = (+new Date());
+
+   //gather results in case we want to batch send on exit
+   Answers[Answers.length] = answersData;
+
+   //send single answer event
+   var outData = {};
+   outData.name = "RegisterAnswer";
+   outData.value = answerData;
+   SingleAnswer.value = outData;	 
+}
+
 //when the tick is selected
 function On_Tick()
 {
@@ -371,6 +389,7 @@ function On_Tick()
 			H1_done = s1_hazardsFound;
 			s1_Score++;
 			H1_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 
 		case 2:
@@ -379,6 +398,7 @@ function On_Tick()
 			H2_done = s1_hazardsFound;
 			s1_Score++;
 			H2_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 3:
@@ -387,6 +407,7 @@ function On_Tick()
 			H3_done = s1_hazardsFound;
 			s1_Score++;
 			H3_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 4:
@@ -395,6 +416,7 @@ function On_Tick()
 			H4_done = s1_hazardsFound;
 			s1_Score++;
 			H4_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 5:
@@ -403,6 +425,7 @@ function On_Tick()
 			H5_done = s1_hazardsFound;
 			s1_Score++;
 			H5_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 6:
@@ -411,6 +434,7 @@ function On_Tick()
 			s2_Score++;
 			H6_done = s1_hazardsFound;
 			H6_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 
 		case 7:
@@ -419,6 +443,7 @@ function On_Tick()
 			s2_Score++;
 			H7_done = s1_hazardsFound;
 			H7_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 8:
@@ -427,6 +452,7 @@ function On_Tick()
 			s2_Score++;
 			H8_done = s1_hazardsFound;
 			H8_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 9:
@@ -435,6 +461,7 @@ function On_Tick()
 			s2_Score++;
 			H9_done = s1_hazardsFound;
 			H9_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 10:
@@ -443,6 +470,7 @@ function On_Tick()
 			s2_Score++;
 			H10_done = s1_hazardsFound;
 			H10_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 11:
@@ -451,6 +479,7 @@ function On_Tick()
 			s3_Score++;
 			H11_done = s1_hazardsFound;
 			H11_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 
 		case 12:
@@ -459,6 +488,7 @@ function On_Tick()
 			s3_Score++;
 			H12_done = s1_hazardsFound;
 			H12_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 13:
@@ -467,6 +497,7 @@ function On_Tick()
 			s3_Score++;
 			H13_done = s1_hazardsFound;
 			H13_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 14:
@@ -475,6 +506,7 @@ function On_Tick()
 			s3_Score++;
 			H14_done = s1_hazardsFound;
 			H14_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		case 15:
@@ -483,6 +515,7 @@ function On_Tick()
 			s3_Score++;
 			H15_done = s1_hazardsFound;
 			H15_ans = true;
+			SendSingleAction(CurrentSel, 1);
 			break;
 			
 		default:
@@ -503,6 +536,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(0).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H1_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 
 		case 2:
@@ -510,6 +544,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(1).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H2_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 3:
@@ -517,6 +552,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(2).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H3_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 4:
@@ -524,6 +560,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(3).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H4_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 5:
@@ -531,6 +568,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(4).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H5_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 6:
@@ -538,6 +576,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(5).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H6_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 
 		case 7:
@@ -545,6 +584,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(6).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H7_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 8:
@@ -552,6 +592,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(7).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H8_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 9:
@@ -559,6 +600,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(8).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H9_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 10:
@@ -566,12 +608,14 @@ function On_Cross()
 			DescriptionText.GetMFElement(9).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H10_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 		case 11:
 			ListofAns.GetMFElement(21).GetFieldByName('SetRun').value = true;
 			DescriptionText.GetMFElement(10).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H11_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 
 		case 12:
@@ -579,6 +623,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(11).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H12_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 13:
@@ -586,6 +631,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(12).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H13_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 14:
@@ -593,6 +639,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(13).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H14_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 			
 		case 15:
@@ -600,6 +647,7 @@ function On_Cross()
 			DescriptionText.GetMFElement(14).GetFieldByName('SetRun').value = true;
 			SetUIFound_Wrong();
 			H15_done = s1_hazardsFound;
+			SendSingleAction(CurrentSel, 0);
 			break;
 		
 	}
