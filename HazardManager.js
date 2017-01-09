@@ -655,9 +655,6 @@ function On_ToSummaryScreen()
 
 function On_BackToSceneSelection()
 {
-    //sends to the server that we've exited by "finishing" the scenario
-    SendExitData(1);
-
 	//back to scene selection screen
 	SceneSelection.value.GetFieldByName('SetRun').value = true;
 	ScreenFader.value.GetFieldByName('GoHigher').value = true;
@@ -690,6 +687,9 @@ function On_BackToSceneSelection()
 	//to game overscreen instead
 	if(s1_done == true && s2_done == true && s3_done == true)
 	{
+        //sends to the server that we've exited by "finishing" the scenario
+        SendExitData(1);
+        
 		Score_1.value = s1_Score + " /3";
 		Score_2.value = s2_Score + " /3";
 		Score_3.value = s3_Score + " /4";
