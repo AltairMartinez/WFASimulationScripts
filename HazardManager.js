@@ -1170,9 +1170,13 @@ function On_ExitButtonPress()
 
 function SendExitData(exitStatusVal)
 {
+    var exitData = {};
+    exitData.exitStatus = exitStatusVal;
+    exitData.exitTimestamp = (+new Date());
+
     var outData = {};
     outData.name = "SimStop";
-    outData.value = exitStatusVal; //0(timeout), 1(finished) , 2(exited), 
+    outData.value = exitData; //0(timeout), 1(finished) , 2(exited), 
     ExitStatus.value = JSON.stringify(outData); 
 
     eon.trace("SendExitData() called..."+ExitStatus.value);
