@@ -1,3 +1,6 @@
+//debug
+var bUseWebviewJS = true;
+
 //Randomize number of hazard
 var s1_rHazards;
 var s2_rHazards;
@@ -63,7 +66,7 @@ function On_QuestionList()
 {
 	var inData = JSON.parse(QuestionList.value);
     Questions = inData.value;
-	//eon.trace(Questions);
+	eon.trace(Questions);
 }
 
 function initialize()
@@ -191,6 +194,10 @@ function SetUIFound_Wrong()
 	}
 }
 
+function GetEONBaseURL() {
+    return "http://192.168.1.65/StudentMetaphorMobileService_V1/PartnerService.svc/"
+}
+
 function SendSingleAnswer(QuestionID, IsCorrect)
 {
    var answerData = {};
@@ -205,9 +212,23 @@ function SendSingleAnswer(QuestionID, IsCorrect)
    var outData = {};
    outData.name = "RegisterAnswer";
    outData.value = answerData;
-   SingleAnswer.value = JSON.stringify(outData);	 
 
-   eon.trace(SingleAnswer);
+   if(bUseWebviewJS)
+   {
+   //approach 1:
+   SingleAnswer.value = JSON.stringify(outData);	 
+   eon.trace(SingleAnswer.value);
+   }
+   else
+   {
+   //approach 2:
+   //url: GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+questionID+"/"+bQuestionCorrect,
+   var nricVal = "A1234567J";
+   var classID = "0";
+   var lessonID = "10000";
+   var timestampVal = (+new Date());
+   eon.Http().get(GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+QuestionID+"/"+(IsCorrect ? "true":"false"), function(res){});
+   }
 }
 
 //when the tick is selected

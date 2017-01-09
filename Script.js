@@ -2,6 +2,8 @@
 // Add subroutines for each in-event or exposed field
 // that you define in the script node's property page.
 
+var bUseWebviewJS = true;
+
 function initialize()
 {
 	SimulationNode.value.GetFieldByName("StereoMode").value = 0;
@@ -30,6 +32,10 @@ function GetRandomHazardIndex(_iZoneNumber, _iCount, _iMax)
     return arr;
 }
 
+function GetEONBaseURL() {
+    return "http://192.168.1.65/StudentMetaphorMobileService_V1/PartnerService.svc/"
+}
+
 function On_SimStart()
 {
     var hazardList = [];
@@ -40,7 +46,37 @@ function On_SimStart()
 	var outData = {};
     outData.name = "SimStart";
     outData.value = hazardList;
+
+    if(bUseWebviewJS)
+    {
+    //approach 1: simple and easy
 	SendQuestions.value = JSON.stringify(outData);
+    }
+	else
+    {
+    //approach 2: stupidly hard to debug live on this primitive tool
+    //url: GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList,
+    var flattenedQuestionList = "";
+    for(var i=0; i<hazardList.length; i++)
+    {
+        var hazardListForZone = hazardList[i];
+        for(var j=0; j<hazardListForZone.length;j++)
+        {
+            if(flattenedQuestionList.length>0)
+            {
+               flattenedQuestionList += "-";
+            }
+            flattenedQuestionList += hazardListForZone[j].toString();
+        }
+    }
+
+    var nricVal = "A1234567J";
+    var classID = "0";
+    var lessonID = "10000";
+    var timestampVal = (+new Date());
+
+	eon.Http().get(GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList, function(res){});
+	}
 }
 
 //function On_SimStop()
@@ -53,5 +89,19 @@ function On_ExitStatus()
     var outData = {};
     outData.name = "SimStop";
     outData.value = exitData;
+    if(bUseWebviewJS)
+    {
+    //approach 1: simple and easy
     SendExitInfo.value = JSON.stringify(outData);
+    }
+    else
+    {
+    //approach 2:
+    //url: GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+exitStatus,
+    var nricVal = "A1234567J";
+    var classID = "0";
+    var lessonID = "10000";
+    var timestampVal = (+new Date());
+	eon.Http().get(GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+ExitStatus.value, function(res){});
+    }
 }
