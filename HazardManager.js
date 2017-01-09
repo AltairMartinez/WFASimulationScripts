@@ -62,7 +62,7 @@ function On_QuestionList()
 {
 	var inData = JSON.parse(QuestionList.value);
     Questions = inData.value;
-	eon.trace(Questions);
+	//eon.trace(Questions);
 }
 
 function initialize()
@@ -142,176 +142,6 @@ function OffTimer()
 	for (var i = 0; i < TimerNodes.value.length; i++)
 	{
 		TimerNodes.GetMFElement(i).GetFieldByName('SetRun_').value = true;
-	}
-}
-	
-
-function Shuffle_s1_Hazards()
-{
-	switch(rNumber) {
-		case 1:
-			if(Scene1Nodes.GetMFElement(0).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(0).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s1_Hazards();
-			}
-			break;
-		case 2:
-			if(Scene1Nodes.GetMFElement(1).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(1).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s1_Hazards();
-			}
-			break;
-		case 3:
-			if(Scene1Nodes.GetMFElement(2).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(2).GetFieldByName('SetRun_').value = false;
-				RemoveStuff.GetMFElement(0).GetFieldByName('SetRun_').value = true;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s1_Hazards();
-			}
-			break;
-		case 4:
-			if(Scene1Nodes.GetMFElement(3).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(3).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s1_Hazards();
-			}
-			break;
-		case 5:
-			if(Scene1Nodes.GetMFElement(4).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(4).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s1_Hazards();
-			}
-			break;
-	}
-}
-function Shuffle_s2_Hazards()
-{
-	switch(rNumber) {
-		case 1:
-			if(Scene1Nodes.GetMFElement(5).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(5).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s2_Hazards();
-			}
-			break;
-		case 2:
-			if(Scene1Nodes.GetMFElement(6).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(6).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s2_Hazards();
-			}
-			break;
-		case 3:
-			if(Scene1Nodes.GetMFElement(7).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(7).GetFieldByName('SetRun_').value = false;
-				RemoveStuff.GetMFElement(1).GetFieldByName('SetRun_').value = true;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s2_Hazards();
-			}
-			break;
-		case 4:
-			if(Scene1Nodes.GetMFElement(8).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(8).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s2_Hazards();
-			}
-			break;
-		case 5:
-			if(Scene1Nodes.GetMFElement(9).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(9).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s2_Hazards();
-			}
-			break;
-	}
-}
-function Shuffle_s3_Hazards()
-{
-	switch(rNumber) {
-		case 1:
-			if(Scene1Nodes.GetMFElement(10).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(10).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s3_Hazards();
-			}
-			break;
-		case 2:
-			if(Scene1Nodes.GetMFElement(11).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(11).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s3_Hazards();
-			}
-			break;
-		case 3:
-			if(Scene1Nodes.GetMFElement(12).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(12).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s3_Hazards();
-			}
-			break;
-		case 4:
-			if(Scene1Nodes.GetMFElement(13).GetFieldByName('SetRun_').value == true)
-			{
-				RemoveStuff.GetMFElement(2).GetFieldByName('SetRun_').value = true;
-				Scene1Nodes.GetMFElement(13).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s3_Hazards();
-			}
-			break;
-		case 5:
-			if(Scene1Nodes.GetMFElement(14).GetFieldByName('SetRun_').value == true)
-			{
-				Scene1Nodes.GetMFElement(14).GetFieldByName('SetRun_').value = false;
-			} else
-			{
-				rNumber = Math.ceil(Math.random()*5);
-				Shuffle_s3_Hazards();
-			}
-			break;
 	}
 }
 
@@ -1139,13 +969,31 @@ function On_StartScene1()
 	ZoneSelectionFader.GetMFElement(0).GetFieldByName('Opacity').value = 0.5;
 	ZoneSelection.value.GetFieldByName('SetRun_').value = true;
 	
-	//set up random hazards
-	//s1_rHazards = Math.ceil(Math.random()*5);
 	s1_rHazards = 3; // for debug
-	for (i = 0; i < s1_rHazards; i++)
+	
+	var zone1Questions = Questions[0];
+	//eon.trace(zone1Questions)
+	for (var i = 0; i < zone1Questions.length; i++)
 	{
-		rNumber = Math.ceil(Math.random()*5);
-		Shuffle_s1_Hazards();
+		switch (zone1Questions[i])
+		{
+			case 1:
+				Scene1Nodes.GetMFElement(0).GetFieldByName('SetRun').value = true;
+				break;
+			case 2:
+				Scene1Nodes.GetMFElement(1).GetFieldByName('SetRun').value = true;
+				break;
+			case 3:
+				RemoveStuff.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+				Scene1Nodes.GetMFElement(2).GetFieldByName('SetRun').value = true;
+				break;
+			case 4:
+				Scene1Nodes.GetMFElement(3).GetFieldByName('SetRun').value = true;
+				break;
+			case 5:
+				Scene1Nodes.GetMFElement(4).GetFieldByName('SetRun').value = true;
+				break;
+		}
 	}
 	CurrentNumHazards = s1_rHazards;
 }
@@ -1163,10 +1011,30 @@ function On_StartScene2()
 	
 	//s2_rHazards = Math.ceil(Math.random()*5);
 	s2_rHazards = 3;
-	for (i = 0; i < s2_rHazards; i++)
+	
+	var zone2Questions = Questions[1];
+	//eon.trace(zone2Questions)
+	for (var i = 0; i < zone2Questions.length; i++)
 	{
-		rNumber = Math.ceil(Math.random()*5);
-		Shuffle_s2_Hazards();
+		switch (zone2Questions[i])
+		{
+			case 6:
+				Scene1Nodes.GetMFElement(5).GetFieldByName('SetRun').value = true;
+				break;
+			case 7:
+				Scene1Nodes.GetMFElement(6).GetFieldByName('SetRun').value = true;
+				break;
+			case 8:
+				RemoveStuff.GetMFElement(1).GetFieldByName('SetRun_').value = true;
+				Scene1Nodes.GetMFElement(7).GetFieldByName('SetRun').value = true;
+				break;
+			case 9:
+				Scene1Nodes.GetMFElement(8).GetFieldByName('SetRun').value = true;
+				break;
+			case 10:
+				Scene1Nodes.GetMFElement(9).GetFieldByName('SetRun').value = true;
+				break;
+		}
 	}
 	CurrentNumHazards = s2_rHazards;
 }
@@ -1184,10 +1052,30 @@ function On_StartScene3()
 	
 	//s3_rHazards = Math.ceil(Math.random()*5);
 	s3_rHazards = 4;
-	for (i = 0; i < s3_rHazards; i++)
+	
+	var zone3Questions = Questions[2];
+	//eon.trace(zone3Questions)
+	for (var i = 0; i < zone3Questions.length; i++)
 	{
-		rNumber = Math.ceil(Math.random()*5);
-		Shuffle_s3_Hazards();
+		switch (zone3Questions[i])
+		{
+			case 11:
+				Scene1Nodes.GetMFElement(10).GetFieldByName('SetRun').value = true;
+				break;
+			case 12:
+				Scene1Nodes.GetMFElement(11).GetFieldByName('SetRun').value = true;
+				break;
+			case 13:
+				Scene1Nodes.GetMFElement(12).GetFieldByName('SetRun').value = true;
+				break;
+			case 14:
+				RemoveStuff.GetMFElement(2).GetFieldByName('SetRun_').value = true;
+				Scene1Nodes.GetMFElement(13).GetFieldByName('SetRun').value = true;
+				break;
+			case 15:
+				Scene1Nodes.GetMFElement(14).GetFieldByName('SetRun').value = true;
+				break;
+		}
 	}
 	CurrentNumHazards = s3_rHazards;
 }
