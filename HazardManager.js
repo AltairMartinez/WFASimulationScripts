@@ -655,6 +655,9 @@ function On_ToSummaryScreen()
 
 function On_BackToSceneSelection()
 {
+    //sends to the server that we've exited by "finishing" the scenario
+    SendExitData(1);
+
 	//back to scene selection screen
 	SceneSelection.value.GetFieldByName('SetRun').value = true;
 	ScreenFader.value.GetFieldByName('GoHigher').value = true;
@@ -992,6 +995,10 @@ function On_StopSim()
 {
 	Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 	Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+
+    //sends to the server that we've timed out
+    SendExitData(0);
+
 }
 
 //Change the timer to display countdown timer
@@ -1154,5 +1161,20 @@ function On_StartScene3()
 function On_resetCam()
 {
 	nPlayer.value.GetFieldByName('Orientation').value = eon.MakeSFVec3f(-148.556,0.4778,0);
+}
+
+function On_ExitButtonPress()
+{
+    SendExitData(2);
+}
+
+function SendExitData(exitStatusVal)
+{
+    var outData = {};
+    outData.name = "SimStop";
+    outData.value = exitStatusVal; //0(timeout), 1(finished) , 2(exited), 
+    ExitStatus.value = JSON.stringify(outData); 
+
+    eon.trace("SendExitData() called..."+ExitStatus.value);
 }
 
