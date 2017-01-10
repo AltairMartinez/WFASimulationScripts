@@ -105,3 +105,36 @@ function On_ExitStatus()
 	eon.Http().get(GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+ExitStatus.value, function(res){});
     }
 }
+
+function On_WEBEvents()
+{
+   eon.trace("**** Peter" + WEBEvents.value);
+
+   var jsonWebEvent = JSON.parse(WEBEvents.value);
+   if(jsonWebEvent.name == "registerUserInfo")
+   {
+
+        //approach 2: stupidly hard to debug live on this primitive tool
+        //url: GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList,
+        var flattenedQuestionList = "";
+        for(var i=0; i<hazardList.length; i++)
+        {
+            var hazardListForZone = hazardList[i];
+            for(var j=0; j<hazardListForZone.length;j++)
+            {
+               if(flattenedQuestionList.length>0)
+               {
+                   flattenedQuestionList += "-";
+               }
+               flattenedQuestionList += hazardListForZone[j].toString();
+            }
+        }
+
+        var userInfo = jsonWebEvent.value;
+        var nricVal = userInfo.nric;
+        var classID = userInfo.classID;
+        var lessonID = userInfo.gameID;
+        var timestampVal = (+new Date());
+	    eon.Http().get(GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList, function(res){});
+    }
+}
