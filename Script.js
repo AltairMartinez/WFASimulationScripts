@@ -2,7 +2,10 @@
 // Add subroutines for each in-event or exposed field
 // that you define in the script node's property page.
 
-var bUseWebviewJS = true;
+var bUseWebviewJS = false;
+var hazardList = [];
+var userInfo = {};
+var bPropagateToP2L = true;
 
 function initialize()
 {
@@ -38,45 +41,18 @@ function GetEONBaseURL() {
 
 function On_SimStart()
 {
-    var hazardList = [];
 	hazardList[0] = GetRandomHazardIndex(1, 3, 5);
 	hazardList[1] = GetRandomHazardIndex(2, 3, 5);
 	hazardList[2] = GetRandomHazardIndex(3, 4, 5);
 
-	var outData = {};
-    outData.name = "SimStart";
-    outData.value = hazardList;
-
     if(bUseWebviewJS)
     {
-    //approach 1: simple and easy
-	SendQuestions.value = JSON.stringify(outData);
+        //approach 1: simple and easy
+	    var outData = {};
+        outData.name = "SimStart";
+        outData.value = hazardList;
+	    SendQuestions.value = JSON.stringify(outData);
     }
-	else
-    {
-    //approach 2: stupidly hard to debug live on this primitive tool
-    //url: GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList,
-    var flattenedQuestionList = "";
-    for(var i=0; i<hazardList.length; i++)
-    {
-        var hazardListForZone = hazardList[i];
-        for(var j=0; j<hazardListForZone.length;j++)
-        {
-            if(flattenedQuestionList.length>0)
-            {
-               flattenedQuestionList += "-";
-            }
-            flattenedQuestionList += hazardListForZone[j].toString();
-        }
-    }
-
-    var nricVal = "A1234567J";
-    var classID = "0";
-    var lessonID = "10000";
-    var timestampVal = (+new Date());
-
-	eon.Http().get(GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList, function(res){});
-	}
 }
 
 //function On_SimStop()
@@ -91,29 +67,28 @@ function On_ExitStatus()
     outData.value = exitData;
     if(bUseWebviewJS)
     {
-    //approach 1: simple and easy
-    SendExitInfo.value = JSON.stringify(outData);
+        //approach 1: simple and easy
+        SendExitInfo.value = JSON.stringify(outData);
     }
     else
     {
-    //approach 2:
-    //url: GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+exitStatus,
-    var nricVal = "A1234567J";
-    var classID = "0";
-    var lessonID = "10000";
-    var timestampVal = (+new Date());
-	eon.Http().get(GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+ExitStatus.value, function(res){});
+        //approach 2:
+        //url: GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+exitStatus,
+        var nricVal = userInfo.nric;
+        var classID = userInfo.classID;
+        var lessonID = userInfo.gameID;
+        var timestampVal = (+new Date());
+	    eon.Http().get(GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+ExitStatus.value+"/"+bPropagateToP2L, function(res){});
     }
 }
 
 function On_WEBEvents()
 {
-   eon.trace("**** Peter" + WEBEvents.value);
+   eon.trace("**** WEBEvents.value = " + WEBEvents.value);
 
    var jsonWebEvent = JSON.parse(WEBEvents.value);
    if(jsonWebEvent.name == "registerUserInfo")
    {
-
         //approach 2: stupidly hard to debug live on this primitive tool
         //url: GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList,
         var flattenedQuestionList = "";
@@ -130,11 +105,12 @@ function On_WEBEvents()
             }
         }
 
-        var userInfo = jsonWebEvent.value;
+        userInfo = jsonWebEvent.value;
         var nricVal = userInfo.nric;
         var classID = userInfo.classID;
         var lessonID = userInfo.gameID;
         var timestampVal = (+new Date());
-	    eon.Http().get(GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList, function(res){});
+        bPropagateToP2L = jsonWebEvent.bPropagate;
+	    eon.Http().get(GetEONBaseURL()+"eon/activity/game/started/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+flattenedQuestionList+"/"+bPropagateToP2L, function(res){});
     }
 }
