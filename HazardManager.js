@@ -229,7 +229,7 @@ function SendSingleAnswer(QuestionID, IsCorrect)
        //approach 2:
        //url: GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+questionID+"/"+bQuestionCorrect,
        var timestampVal = (+new Date());
-       eon.Http().get(GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+QuestionID+"/"+(IsCorrect ? "true":"false"), function(res){});
+       eon.Http().get(GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+QuestionID+"/"+(IsCorrect ? "true":"false")+"/"+bPropagateToP2L, function(res){});
    }
 }
 
