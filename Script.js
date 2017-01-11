@@ -45,14 +45,11 @@ function On_SimStart()
 	hazardList[1] = GetRandomHazardIndex(2, 3, 5);
 	hazardList[2] = GetRandomHazardIndex(3, 4, 5);
 
-    if(bUseWebviewJS)
-    {
-        //approach 1: simple and easy
-	    var outData = {};
-        outData.name = "SimStart";
-        outData.value = hazardList;
-	    SendQuestions.value = JSON.stringify(outData);
-    }
+    //approach 1: simple and easy
+	var outData = {};
+    outData.name = "SimStart";
+    outData.value = hazardList;
+	SendQuestions.value = JSON.stringify(outData);
 }
 
 //function On_SimStop()
@@ -84,7 +81,7 @@ function On_ExitStatus()
 
 function On_WEBEvents()
 {
-   eon.trace("**** WEBEvents.value = " + WEBEvents.value);
+   eon.trace("**** Script.js >> WEBEvents.value = " + WEBEvents.value);
 
    var jsonWebEvent = JSON.parse(WEBEvents.value);
    if(jsonWebEvent.name == "registerUserInfo")

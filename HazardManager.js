@@ -1,5 +1,10 @@
 //debug
-var bUseWebviewJS = true;
+var bUseWebviewJS = false;
+var userInfo = {};
+var bPropagateToP2L = true;
+var nricVal = "";
+var classID = -1;
+var lessonID = -1;
 
 //Randomize number of hazard
 var s1_rHazards;
@@ -215,19 +220,16 @@ function SendSingleAnswer(QuestionID, IsCorrect)
 
    if(bUseWebviewJS)
    {
-   //approach 1:
-   SingleAnswer.value = JSON.stringify(outData);	 
-   eon.trace(SingleAnswer.value);
+       //approach 1:
+       SingleAnswer.value = JSON.stringify(outData);	 
+       eon.trace(SingleAnswer.value);
    }
    else
    {
-   //approach 2:
-   //url: GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+questionID+"/"+bQuestionCorrect,
-   var nricVal = "A1234567J";
-   var classID = "0";
-   var lessonID = "10000";
-   var timestampVal = (+new Date());
-   eon.Http().get(GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+QuestionID+"/"+(IsCorrect ? "true":"false"), function(res){});
+       //approach 2:
+       //url: GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+questionID+"/"+bQuestionCorrect,
+       var timestampVal = (+new Date());
+       eon.Http().get(GetEONBaseURL()+"eon/activity/game/response/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+QuestionID+"/"+(IsCorrect ? "true":"false"), function(res){});
    }
 }
 
@@ -1182,3 +1184,17 @@ function SendExitData(exitStatusVal)
     eon.trace("SendExitData() called..."+ExitStatus.value);
 }
 
+function On_WEBEvents()
+{
+   eon.trace("**** HazardManager.js >> WEBEvents.value = " + WEBEvents.value);
+
+   var jsonWebEvent = JSON.parse(WEBEvents.value);
+   if(jsonWebEvent.name == "registerUserInfo")
+   {
+        userInfo = jsonWebEvent.value;
+        nricVal = userInfo.nric;
+        classID = userInfo.classID;
+        lessonID = userInfo.gameID;
+        bPropagateToP2L = jsonWebEvent.bPropagate;
+    }
+}
