@@ -1176,10 +1176,22 @@ function SendExitData(exitStatusVal)
     exitData.exitStatus = exitStatusVal;
     exitData.exitTimestamp = (+new Date());
 
-    var outData = {};
-    outData.name = "SimStop";
-    outData.value = exitData; //0(timeout), 1(finished) , 2(exited), 
-    ExitStatus.value = JSON.stringify(outData); 
+    //approach 1:
+    if(bUseWebviewJS)
+    {
+        var outData = {};
+        outData.name = "SimStop";
+        outData.value = exitData; //0(timeout), 1(finished) , 2(exited), 
+        ExitStatus.value = JSON.stringify(outData); 
+    }
+    else
+    {
+        //url: GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+timestampVal+"/"+exitStatus
+        eon.Http().get(GetEONBaseURL()+"eon/activity/game/finished/"+classID+"/"+lessonID+"/"+nricVal+"/"+exitData.exitTimestamp+"/"+exitStatusVal+"/"+bPropagateToP2L, function(res){});
+    }
+
+
+
 
     eon.trace("SendExitData() called..."+ExitStatus.value);
 }
