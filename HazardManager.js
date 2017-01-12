@@ -200,7 +200,7 @@ function SetUIFound_Wrong()
 }
 
 function GetEONBaseURL() {
-    return "http://192.168.1.65/StudentMetaphorMobileService_V1/PartnerService.svc/"
+    return "http://54.251.161.144/MobileService_V1/PartnerService.svc/"
 }
 
 function SendSingleAnswer(QuestionID, IsCorrect)
