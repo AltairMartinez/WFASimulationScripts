@@ -6,6 +6,9 @@ var nricVal = "";
 var classID = -1;
 var lessonID = -1;
 
+//TimerMode
+var TimerMode = true;
+
 //Randomize number of hazard
 var s1_rHazards;
 var s2_rHazards;
@@ -110,9 +113,12 @@ function On_Set_s1_Hazards()
 		initialize();
 		s1_done = true;
 		CurrentScene = 1;
+		OffsetExit.value = CurrentScene;
 		ScreenFader.value.GetFieldByName('GoHigher').value = true;
 		Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 		Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+		ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+		ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	}
 	Sounds.GetMFElement(5).GetFieldByName('Volume').value = 60;
 	
@@ -125,9 +131,12 @@ function On_Set_s2_Hazards()
 		initialize();
 		s2_done = true;
 		CurrentScene = 2;
+		OffsetExit.value = CurrentScene;
 		ScreenFader.value.GetFieldByName('GoHigher').value = true;
 		Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 		Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+		ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+		ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	}
 }
 function On_Set_s3_Hazards()
@@ -138,9 +147,12 @@ function On_Set_s3_Hazards()
 		initialize();
 		s3_done = true;
 		CurrentScene = 3;
+		OffsetExit.value = CurrentScene;
 		ScreenFader.value.GetFieldByName('GoHigher').value = true;
 		Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 		Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+		ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+		ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	}
 	Sounds.GetMFElement(4).GetFieldByName('SetRun_').value = true;
 	Sounds.GetMFElement(4).GetFieldByName('SetRun').value = true;
@@ -378,6 +390,8 @@ function On_Tick()
 	}
 	Sounds.GetMFElement(1).GetFieldByName('SetRun_').value = true;
 	Sounds.GetMFElement(1).GetFieldByName('SetRun').value = true;
+	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	CheckSceneClear();
 }
 
@@ -508,6 +522,8 @@ function On_Cross()
 	}
 	Sounds.GetMFElement(2).GetFieldByName('SetRun_').value = true;
 	Sounds.GetMFElement(2).GetFieldByName('SetRun').value = true;
+	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	CheckSceneClear();
 }
 
@@ -589,6 +605,9 @@ function On_ToSummaryScreen()
 	
 	//remove ui questions
 	UIQuestion.value.GetFieldByName('Position').value = eon.MakeSFVec3f(0, 0, -50);
+	//remove exit button and screen
+	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun_').value = true;
 	
 	//reset all click sensors
 	/*
@@ -685,6 +704,13 @@ function On_BackToSceneSelection()
 	BckButtons.GetMFElement(2).GetFieldByName('SetRun_').value = true;
 	
 	initialize();
+	
+	//set exit button position
+	CurrentScene = 0;
+	OffsetExit.value = CurrentScene;
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(4.2582,28.0778,-6.2429);
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
+	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 	
 	//to game overscreen instead
 	if(s1_done == true && s2_done == true && s3_done == true)
@@ -998,6 +1024,9 @@ function On_StopSim()
 	Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 	Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
 
+	EndingScreens.GetMFElement(0).GetFieldByName('SetRun').value = true;
+	EndingScreens.GetMFElement(1).GetFieldByName('SetRun').value = true;
+	
     //sends to the server that we've timed out
     SendExitData(0);
 
@@ -1042,7 +1071,10 @@ function On_StartScene1()
 	UI_StartScene.GetMFElement(0).GetFieldByName('SetRun').value = true;
 	for (var i = 0; i < TimerNodes.value.length; i++)
 	{
-		//TimerNodes.GetMFElement(i).GetFieldByName('SetRun').value = true; //debug timer
+		if(TimerMode)
+		{
+			TimerNodes.GetMFElement(i).GetFieldByName('SetRun').value = true; //debug timer
+		}
 	}
 	Zone_UI.GetMFElement(0).GetFieldByName('SetRun').value = true;
 	ScreenFader.value.GetFieldByName('GoLower').value = true;
@@ -1076,13 +1108,19 @@ function On_StartScene1()
 		}
 	}
 	CurrentNumHazards = s1_rHazards;
+	
+	//set exit button position
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 1));
 }
 function On_StartScene2()
 {
 	UI_StartScene.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	for (var i = 0; i < TimerNodes.value.length; i++)
 	{
-		//TimerNodes.GetMFElement(i).GetFieldByName('SetRun').value = true;
+		if(TimerMode)
+		{
+			TimerNodes.GetMFElement(i).GetFieldByName('SetRun').value = true; //debug timer
+		}
 	}
 	Zone_UI.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	ScreenFader.value.GetFieldByName('GoLower').value = true;
@@ -1117,13 +1155,20 @@ function On_StartScene2()
 		}
 	}
 	CurrentNumHazards = s2_rHazards;
+	
+	//set exit button position
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 2));
+	
 }
 function On_StartScene3()
 {
 	UI_StartScene.GetMFElement(2).GetFieldByName('SetRun').value = true;
 	for (var i = 0; i < TimerNodes.value.length; i++)
 	{
-		//TimerNodes.GetMFElement(i).GetFieldByName('SetRun').value = true;
+		if(TimerMode)
+		{
+			TimerNodes.GetMFElement(i).GetFieldByName('SetRun').value = true; //debug timer
+		}
 	}
 	Zone_UI.GetMFElement(2).GetFieldByName('SetRun').value = true;
 	ScreenFader.value.GetFieldByName('GoLower').value = true;
@@ -1158,11 +1203,35 @@ function On_StartScene3()
 		}
 	}
 	CurrentNumHazards = s3_rHazards;
+	
+	//set exit button position
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 0.4));
+	
 }
 
 function On_resetCam()
 {
-	nPlayer.value.GetFieldByName('Orientation').value = eon.MakeSFVec3f(-148.556,0.4778,0);
+	//nPlayer.value.GetFieldByName('Orientation').value = eon.MakeSFVec3f(-148.556,0,0);
+}
+
+function On_ConfirmationExit()
+{
+	Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun').value = true;
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun_').value = true;
+	ConfirmationScreen.GetMFElement(0).GetFieldByName('Position').value = nPlayer.value.GetFieldByName('Position').value;
+	
+	OffsetExit.value = CurrentScene;
+	//ConfirmationScreen.GetMFElement(0).GetFieldByName('Orientation').value = eon.MakeSFVec3f((nPlayer.value.GetFieldByName('Orientation').value[0] - 215),ConfirmationScreen.GetMFElement(0).GetFieldByName('Orientation').value[1],ConfirmationScreen.GetMFElement(0).GetFieldByName('Orientation').value[2]);
+}
+
+function On_CancelExit()
+{
+	Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
 }
 
 function On_ExitButtonPress()
