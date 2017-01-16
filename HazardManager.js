@@ -1028,8 +1028,20 @@ function On_StopSim()
 	EndingScreens.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	
     //sends to the server that we've timed out
-    SendExitData(0);
+    SendExitData(1);
 
+}
+
+function On_ExitApp()
+{
+	Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+
+	EndingScreens.GetMFElement(0).GetFieldByName('SetRun').value = true;
+	EndingScreens.GetMFElement(1).GetFieldByName('SetRun').value = true;
+	
+    //sends to the server that we've timed out
+    SendExitData(2);
 }
 
 //Change the timer to display countdown timer
