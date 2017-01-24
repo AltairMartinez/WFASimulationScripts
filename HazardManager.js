@@ -6,8 +6,9 @@ var nricVal = "";
 var classID = -1;
 var lessonID = -1;
 
-//TimerMode
-var TimerMode = true;
+//Mode
+var TimerMode = false;
+var CurrentVrMode = true;
 
 //Randomize number of hazard
 var s1_rHazards;
@@ -595,6 +596,14 @@ function CheckSceneClear()
 	UIQuestion.value.GetFieldByName('Position').value = eon.MakeSFVec3f(0, 0, -50);
 }
 
+function On_TimeUp()
+{
+	for(var i = 0; i < ClickSensors.value.length ; i++)
+	{
+		ClickSensors.GetMFElement(i).GetFieldByName('SetRun_').value = true;
+	}
+}
+
 function On_ToSummaryScreen()
 {
 	OffTimer();
@@ -696,6 +705,10 @@ function On_BackToSceneSelection()
 	{
 		SummaryCross.GetMFElement(k).GetFieldByName('SetRun_').value = true;
 	}
+	for(var l = 0; l < ClickSensors.value.length ; l++)
+	{
+		ClickSensors.GetMFElement(l).GetFieldByName('SetRun').value = true;
+	}
 	SummaryScreens.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 	SummaryScreens.GetMFElement(1).GetFieldByName('SetRun_').value = true;
 	SummaryScreens.GetMFElement(2).GetFieldByName('SetRun_').value = true;
@@ -709,15 +722,13 @@ function On_BackToSceneSelection()
 	CurrentScene = 0;
 	OffsetExit.value = CurrentScene;
 	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(4.2582,28.0778,-6.2429);
+	ConfirmationScreen.GetMFElement(2).GetFieldByName('Position').value = eon.MakeSFVec3f(4.2582,28.0778,-6.2429 + 0.3726);
 	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
 	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 	
 	//to game overscreen instead
 	if(s1_done == true && s2_done == true && s3_done == true)
 	{
-        //sends to the server that we've exited by "finishing" the scenario
-        SendExitData(1);
-        
 		Score_1.value = s1_Score + " /3";
 		Score_2.value = s2_Score + " /3";
 		Score_3.value = s3_Score + " /4";
@@ -1123,6 +1134,7 @@ function On_StartScene1()
 	
 	//set exit button position
 	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 1));
+	ConfirmationScreen.GetMFElement(2).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 1 + 0.3726));
 }
 function On_StartScene2()
 {
@@ -1170,6 +1182,7 @@ function On_StartScene2()
 	
 	//set exit button position
 	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 2));
+	ConfirmationScreen.GetMFElement(2).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 2 + 0.3726));
 	
 }
 function On_StartScene3()
@@ -1218,6 +1231,7 @@ function On_StartScene3()
 	
 	//set exit button position
 	ConfirmationScreen.GetMFElement(1).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 0.4));
+	ConfirmationScreen.GetMFElement(2).GetFieldByName('Position').value = eon.MakeSFVec3f(nPlayer.value.GetFieldByName('Position').value[0],nPlayer.value.GetFieldByName('Position').value[1],(nPlayer.value.GetFieldByName('Position').value[2] - 0.4 + 0.2008));
 	
 }
 
@@ -1244,6 +1258,26 @@ function On_CancelExit()
 	Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
 	ConfirmationScreen.GetMFElement(0).GetFieldByName('SetRun_').value = true;
 	ConfirmationScreen.GetMFElement(1).GetFieldByName('SetRun').value = true;
+}
+
+function On_ChangeMono()
+{
+	Sounds.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+	Sounds.GetMFElement(0).GetFieldByName('SetRun').value = true;
+	if(CurrentVrMode)
+	{
+		ButtonMono.GetMFElement(0).GetFieldByName('SetRun_').value = true;
+		ButtonMono.GetMFElement(1).GetFieldByName('SetRun').value = true;
+		CurrentVrMode = false;
+		Sim.value.GetFieldByName('StereoMode').value = 0;
+	}
+	else
+	{
+		ButtonMono.GetMFElement(1).GetFieldByName('SetRun_').value = true;
+		ButtonMono.GetMFElement(0).GetFieldByName('SetRun').value = true;
+		CurrentVrMode = true;
+		Sim.value.GetFieldByName('StereoMode').value = 5;
+	}
 }
 
 function On_ExitButtonPress()
